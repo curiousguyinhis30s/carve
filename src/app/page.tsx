@@ -151,16 +151,27 @@ const scaleIn = {
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const { scrollY } = useScroll()
 
   const heroY = useTransform(scrollY, [0, 500], [0, 50])
   // Removed opacity fade - keeps hero visible while scrolling
+
+  // Track hydration - animations only run after mount to prevent SSR blank page
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Animation variants - only apply initial state after mount
+  // Returns false during SSR (no animation state), variant after mount
+  const getInitial = <T extends string | object>(variant: T): T | false =>
+    mounted ? variant : false
 
   return (
     <div className="min-h-screen bg-[var(--cream)] overflow-x-hidden">
@@ -281,7 +292,7 @@ export default function HomePage() {
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
               {/* Left: Copy - Takes 7 columns */}
               <motion.div
-                initial="hidden"
+                initial={getInitial("hidden")}
                 animate="visible"
                 variants={staggerContainer}
                 className="lg:col-span-7 text-center lg:text-left"
@@ -370,7 +381,7 @@ export default function HomePage() {
 
               {/* Right: Card Preview - Takes 5 columns */}
               <motion.div
-                initial={{ opacity: 0, y: 40, rotate: 0 }}
+                initial={mounted ? { opacity: 0, y: 40, rotate: 0 } : false}
                 animate={{ opacity: 1, y: 0, rotate: 3 }}
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="lg:col-span-5 relative"
@@ -522,7 +533,7 @@ export default function HomePage() {
       <section id="features" className="py-24 md:py-32">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -544,7 +555,7 @@ export default function HomePage() {
 
           {/* Bento Grid Layout - Consistent Clean Design */}
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -671,7 +682,7 @@ export default function HomePage() {
       <section id="how-it-works" className="py-24 md:py-32 bg-[var(--cream-dark)]">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -786,7 +797,7 @@ export default function HomePage() {
       <section id="pricing" className="py-24 md:py-32">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -801,7 +812,7 @@ export default function HomePage() {
           </motion.div>
 
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -869,7 +880,7 @@ export default function HomePage() {
       <section className="py-24 md:py-32 bg-[var(--cream-dark)] overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -1194,7 +1205,7 @@ export default function HomePage() {
       <section className="py-24 md:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -1209,7 +1220,7 @@ export default function HomePage() {
           </motion.div>
 
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -1265,7 +1276,7 @@ export default function HomePage() {
       <section className="py-24 md:py-32 bg-[var(--cream-dark)]">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -1280,7 +1291,7 @@ export default function HomePage() {
           </motion.div>
 
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={staggerContainer}
@@ -1379,7 +1390,7 @@ export default function HomePage() {
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            initial="hidden"
+            initial={getInitial("hidden")}
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}

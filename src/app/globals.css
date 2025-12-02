@@ -365,14 +365,5 @@ html {
   animation-play-state: paused;
 }
 
-/* Framer Motion SSR fallback - ensure content is visible before JS hydrates */
-/* This prevents blank page if JS fails to load or run */
-/* Override inline styles set by framer-motion during SSR */
-body *[style] {
-  opacity: 1 !important;
-}
-
-/* Ensure transforms don't hide content */
-body *[style*="transform"] {
-  transform: none !important;
-}
+/* Framer Motion SSR fallback - handled via mounted state check in page.tsx */
+/* The component now uses initial={false} during SSR to prevent blank page */
