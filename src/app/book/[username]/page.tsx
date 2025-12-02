@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { CreditCard, ArrowLeft } from 'lucide-react'
-import { BookingCalendar } from '@/components/booking/booking-calendar'
+import { BookingCalendar } from '@/components/organisms/booking-calendar'
 import { toast } from 'sonner'
 
 // Mock user data - in production this would come from database

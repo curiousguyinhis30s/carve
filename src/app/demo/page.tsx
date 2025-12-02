@@ -1,4 +1,4 @@
-import { ProfileCard } from '@/components/profile/profile-card'
+import { ProfileCard } from '@/components/organisms/profile-card'
 import type { Metadata } from 'next'
 import type { Profile, ProfileLink } from '@/types/database'
 
