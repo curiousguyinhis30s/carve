@@ -24,7 +24,7 @@ export default async function DashboardLayout({
     .single()
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-[#0A0A0A]">
       <DashboardNav user={user} profile={profile} />
       <main className="lg:pl-72">
         <div className="p-6 lg:p-8">

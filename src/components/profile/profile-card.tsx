@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { QRCodeSVG } from 'qrcode.react'
 import {
   Mail,
@@ -18,12 +19,9 @@ import {
   Download,
   Share2,
   QrCode,
-  X,
+  ChevronRight,
 } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import {
   Dialog,
   DialogContent,
@@ -69,14 +67,11 @@ export function ProfileCard({ profile, links }: ProfileCardProps) {
           text: profile.bio || `Connect with ${profile.name}`,
           url: profileUrl,
         })
-      } catch (err) {
-        // User cancelled or share failed
-        console.log('Share cancelled')
+      } catch {
+        // Share cancelled
       }
     } else {
-      // Fallback: copy to clipboard
       await navigator.clipboard.writeText(profileUrl)
-      // You could show a toast here
     }
   }
 
@@ -103,133 +98,222 @@ export function ProfileCard({ profile, links }: ProfileCardProps) {
         if (link.url.includes('wa.me')) return link.url
         return `https://wa.me/${link.url.replace(/\D/g, '')}`
       default:
+        if (link.url.startsWith('/')) return link.url
         return link.url.startsWith('http') ? link.url : `https://${link.url}`
     }
   }
 
+  const isInternalLink = (url: string) => url.startsWith('/')
+
+  // Separate social links from action links
+  const socialLinks = links.filter(l => ['linkedin', 'twitter', 'instagram', 'facebook', 'youtube', 'github'].includes(l.type))
+  const actionLinks = links.filter(l => !['linkedin', 'twitter', 'instagram', 'facebook', 'youtube', 'github'].includes(l.type))
+
   return (
-    <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-2xl overflow-hidden">
-      {/* Cover Image */}
-      {profile.cover_url && (
-        <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600 relative">
-          <img
-            src={profile.cover_url}
-            alt=""
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="w-full max-w-sm mx-auto"
+    >
+      {/* Clean Card Container */}
+      <div className="bg-white rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
+        {/* Profile Image - Circular, Centered */}
+        <div className="pt-10 pb-6 px-6 text-center">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
+            className="relative inline-block"
+          >
+            {profile.avatar_url ? (
+              <img
+                src={profile.avatar_url}
+                alt={profile.name}
+                className="w-28 h-28 rounded-full object-cover ring-4 ring-gray-50"
+              />
+            ) : (
+              <div className="w-28 h-28 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center ring-4 ring-gray-50">
+                <span className="text-3xl font-semibold text-white">
+                  {getInitials(profile.name)}
+                </span>
+              </div>
+            )}
+          </motion.div>
 
-      <CardContent className="p-6">
-        {/* Avatar & Basic Info */}
-        <div className={`flex flex-col items-center ${profile.cover_url ? '-mt-16' : ''}`}>
-          <Avatar className="h-24 w-24 border-4 border-slate-900 shadow-xl">
-            <AvatarImage src={profile.avatar_url || ''} alt={profile.name} />
-            <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl font-bold">
-              {getInitials(profile.name)}
-            </AvatarFallback>
-          </Avatar>
-
-          <h1 className="mt-4 text-2xl font-bold text-white">{profile.name}</h1>
+          {/* Name & Title */}
+          <motion.h1
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="mt-5 text-2xl font-semibold text-gray-900 tracking-tight"
+          >
+            {profile.name}
+          </motion.h1>
 
           {profile.title && (
-            <p className="mt-1 text-slate-300">{profile.title}</p>
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mt-1 text-sm text-gray-500"
+            >
+              {profile.title}
+              {profile.company && (
+                <span className="text-gray-400"> · {profile.company}</span>
+              )}
+            </motion.p>
           )}
 
-          {profile.company && (
-            <Badge variant="secondary" className="mt-2 bg-white/10 text-slate-200">
-              {profile.company}
-            </Badge>
-          )}
-
+          {/* Bio */}
           {profile.bio && (
-            <p className="mt-4 text-center text-slate-400 text-sm max-w-xs">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.25 }}
+              className="mt-4 text-sm text-gray-500 leading-relaxed max-w-xs mx-auto"
+            >
               {profile.bio}
-            </p>
+            </motion.p>
           )}
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-3 mt-6 justify-center">
-          <Button
-            onClick={handleSaveContact}
-            className="flex-1 max-w-[140px] bg-blue-600 hover:bg-blue-700"
-          >
-            <Download className="mr-2 h-4 w-4" />
-            Save Contact
-          </Button>
+        {/* Primary Actions - Clean Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="px-6 pb-6"
+        >
+          <div className="flex gap-2">
+            <Button
+              onClick={handleSaveContact}
+              className="flex-1 h-11 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-medium text-sm"
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Save Contact
+            </Button>
 
-          <Button
-            variant="outline"
-            onClick={handleShare}
-            className="border-white/20 text-white hover:bg-white/10"
-          >
-            <Share2 className="h-4 w-4" />
-          </Button>
-
-          <Dialog open={showQR} onOpenChange={setShowQR}>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                className="border-white/20 text-white hover:bg-white/10"
-              >
-                <QrCode className="h-4 w-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-slate-900 border-white/10">
-              <DialogHeader>
-                <DialogTitle className="text-white">Scan to Connect</DialogTitle>
-              </DialogHeader>
-              <div className="flex justify-center p-6">
-                <div className="bg-white p-4 rounded-xl">
-                  <QRCodeSVG
-                    value={profileUrl}
-                    size={200}
-                    level="H"
-                    includeMargin={false}
-                  />
-                </div>
-              </div>
-              <p className="text-center text-slate-400 text-sm">
-                Scan this QR code to view {profile.name}&apos;s profile
-              </p>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {/* Links */}
-        {links.length > 0 && (
-          <div className="mt-8 space-y-3">
-            {links.map(link => {
-              const Icon = LINK_ICONS[link.type] || LinkIcon
-              return (
-                <a
-                  key={link.id}
-                  href={getLinkHref(link)}
-                  target={link.type === 'email' || link.type === 'phone' ? undefined : '_blank'}
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
+            <Dialog open={showQR} onOpenChange={setShowQR}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="h-11 w-11 p-0 border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl"
                 >
-                  <div className="p-2 rounded-lg bg-white/10">
-                    <Icon className="h-5 w-5 text-blue-400" />
+                  <QrCode className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-white border-gray-200 max-w-xs rounded-2xl">
+                <DialogHeader>
+                  <DialogTitle className="text-gray-900 text-center font-semibold">Scan to Connect</DialogTitle>
+                </DialogHeader>
+                <div className="flex justify-center p-6">
+                  <div className="bg-gray-50 p-4 rounded-2xl">
+                    <QRCodeSVG
+                      value={profileUrl}
+                      size={160}
+                      level="H"
+                      includeMargin={false}
+                    />
                   </div>
-                  <span className="text-white font-medium">{link.label}</span>
-                </a>
-              )
-            })}
+                </div>
+                <p className="text-center text-gray-400 text-sm pb-2">
+                  Scan to view {profile.name}&apos;s profile
+                </p>
+              </DialogContent>
+            </Dialog>
+
+            <Button
+              variant="outline"
+              onClick={handleShare}
+              className="h-11 w-11 p-0 border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl"
+            >
+              <Share2 className="h-4 w-4" />
+            </Button>
           </div>
+        </motion.div>
+
+        {/* Social Icons - Minimal Row */}
+        {socialLinks.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+            className="px-6 pb-6"
+          >
+            <div className="flex justify-center gap-1">
+              {socialLinks.map((link, index) => {
+                const Icon = LINK_ICONS[link.type] || LinkIcon
+                return (
+                  <motion.a
+                    key={link.id}
+                    href={getLinkHref(link)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.35 + index * 0.03 }}
+                    className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200"
+                  >
+                    <Icon className="h-[18px] w-[18px]" />
+                  </motion.a>
+                )
+              })}
+            </div>
+          </motion.div>
         )}
 
-        {/* Footer */}
-        <div className="mt-8 pt-6 border-t border-white/10 text-center">
-          <p className="text-slate-500 text-xs">
-            Powered by{' '}
-            <a href="/" className="text-blue-400 hover:underline">
-              Hendshake
-            </a>
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+        {/* Action Links - Clean List */}
+        {actionLinks.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="border-t border-gray-100"
+          >
+            {actionLinks.map((link, index) => {
+              const Icon = LINK_ICONS[link.type] || LinkIcon
+              const href = getLinkHref(link)
+              const isInternal = isInternalLink(link.url)
+              const shouldOpenInNewTab = !isInternal && link.type !== 'email' && link.type !== 'phone'
+
+              return (
+                <motion.a
+                  key={link.id}
+                  href={href}
+                  target={shouldOpenInNewTab ? '_blank' : undefined}
+                  rel={shouldOpenInNewTab ? 'noopener noreferrer' : undefined}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 + index * 0.05 }}
+                  className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 group"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                    <Icon className="h-4 w-4 text-gray-600" />
+                  </div>
+                  <span className="text-gray-900 font-medium text-sm flex-1">{link.label}</span>
+                  <ChevronRight className="h-4 w-4 text-gray-300 group-hover:text-gray-400 transition-colors" />
+                </motion.a>
+              )
+            })}
+          </motion.div>
+        )}
+
+        {/* Footer - Subtle */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="py-4 text-center bg-gray-50"
+        >
+          <a
+            href="/"
+            className="text-gray-400 text-xs hover:text-gray-500 transition-colors"
+          >
+            Powered by Carve
+          </a>
+        </motion.div>
+      </div>
+    </motion.div>
   )
 }

@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import {
   Select,
   SelectContent,
@@ -22,12 +21,11 @@ import {
   Plus,
   Trash2,
   Eye,
-  ExternalLink,
   Link as LinkIcon,
   GripVertical,
 } from 'lucide-react'
 import { toast } from 'sonner'
-import type { Profile, ProfileLink } from '@/types/database'
+import type { Profile } from '@/types/database'
 import { LINK_TYPES } from '@/types/database'
 
 interface EditableLink {
@@ -197,7 +195,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--coral)]" />
       </div>
     )
   }
@@ -208,7 +206,7 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Edit Profile</h1>
-          <p className="text-slate-400">Customize your digital business card</p>
+          <p className="text-white/60">Customize your digital business card</p>
         </div>
         <div className="flex gap-3">
           {profile && (
@@ -226,7 +224,7 @@ export default function DashboardPage() {
           <Button
             onClick={handleSave}
             disabled={saving}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-[var(--coral)] hover:bg-[var(--coral-dark)] text-white"
           >
             {saving ? (
               <>
@@ -249,18 +247,18 @@ export default function DashboardPage() {
           <CardContent className="py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <LinkIcon className="h-4 w-4 text-slate-400" />
-                <span className="text-slate-400">Your profile URL:</span>
-                <code className="px-2 py-1 bg-white/10 rounded text-blue-400">
-                  hendshake.com/{profile.username}
+                <LinkIcon className="h-4 w-4 text-white/60" />
+                <span className="text-white/60">Your profile URL:</span>
+                <code className="px-2 py-1 bg-white/10 rounded text-[var(--coral)]">
+                  carve.app/{profile.username}
                 </code>
               </div>
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-slate-400 hover:text-white"
+                className="text-white/60 hover:text-white"
                 onClick={() => {
-                  navigator.clipboard.writeText(`https://hendshake.com/${profile.username}`)
+                  navigator.clipboard.writeText(`https://carve.app/${profile.username}`)
                   toast.success('URL copied to clipboard!')
                 }}
               >
@@ -276,7 +274,7 @@ export default function DashboardPage() {
         <Card className="bg-white/5 border-white/10">
           <CardHeader>
             <CardTitle className="text-white">Basic Information</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardDescription className="text-white/60">
               Your name and professional details
             </CardDescription>
           </CardHeader>
@@ -285,12 +283,12 @@ export default function DashboardPage() {
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20">
                 <AvatarImage src={formData.avatar_url} />
-                <AvatarFallback className="bg-blue-600 text-white text-xl">
+                <AvatarFallback className="bg-[var(--coral)] text-white text-xl">
                   {getInitials(formData.name || 'U')}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <Label htmlFor="avatar_url" className="text-slate-300">
+                <Label htmlFor="avatar_url" className="text-white/80">
                   Avatar URL
                 </Label>
                 <Input
@@ -298,39 +296,39 @@ export default function DashboardPage() {
                   placeholder="https://example.com/avatar.jpg"
                   value={formData.avatar_url}
                   onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })}
-                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-slate-300">
+              <Label htmlFor="name" className="text-white/80">
                 Full Name
               </Label>
               <Input
                 id="name"
-                placeholder="John Doe"
+                placeholder="Jane Doe"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="title" className="text-slate-300">
+              <Label htmlFor="title" className="text-white/80">
                 Job Title
               </Label>
               <Input
                 id="title"
-                placeholder="Software Engineer"
+                placeholder="Product Designer"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="company" className="text-slate-300">
+              <Label htmlFor="company" className="text-white/80">
                 Company
               </Label>
               <Input
@@ -338,12 +336,12 @@ export default function DashboardPage() {
                 placeholder="Acme Inc."
                 value={formData.company}
                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="bio" className="text-slate-300">
+              <Label htmlFor="bio" className="text-white/80">
                 Bio
               </Label>
               <Textarea
@@ -351,7 +349,7 @@ export default function DashboardPage() {
                 placeholder="A short description about yourself..."
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 min-h-[100px]"
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/40 min-h-[100px]"
               />
             </div>
           </CardContent>
@@ -361,27 +359,27 @@ export default function DashboardPage() {
         <Card className="bg-white/5 border-white/10">
           <CardHeader>
             <CardTitle className="text-white">Contact Information</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardDescription className="text-white/60">
               How people can reach you
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-300">
+              <Label htmlFor="email" className="text-white/80">
                 Email
               </Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="john@example.com"
+                placeholder="jane@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-slate-300">
+              <Label htmlFor="phone" className="text-white/80">
                 Phone
               </Label>
               <Input
@@ -390,21 +388,21 @@ export default function DashboardPage() {
                 placeholder="+1 (555) 123-4567"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="website" className="text-slate-300">
+              <Label htmlFor="website" className="text-white/80">
                 Website
               </Label>
               <Input
                 id="website"
                 type="url"
-                placeholder="https://johndoe.com"
+                placeholder="https://janedoe.com"
                 value={formData.website}
                 onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
               />
             </div>
           </CardContent>
@@ -417,7 +415,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-white">Social Links</CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardDescription className="text-white/60">
                 Add links to your social profiles and websites
               </CardDescription>
             </div>
@@ -434,7 +432,7 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           {links.length === 0 ? (
-            <div className="text-center py-8 text-slate-500">
+            <div className="text-center py-8 text-white/40">
               <LinkIcon className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>No links added yet</p>
               <p className="text-sm">Click &quot;Add Link&quot; to add your social profiles</p>
@@ -444,9 +442,9 @@ export default function DashboardPage() {
               {links.map((link, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-3 p-3 bg-white/5 rounded-lg"
+                  className="flex items-center gap-3 p-3 bg-white/5 rounded-xl"
                 >
-                  <GripVertical className="h-5 w-5 text-slate-500 cursor-grab" />
+                  <GripVertical className="h-5 w-5 text-white/40 cursor-grab" />
 
                   <Select
                     value={link.type}
@@ -455,7 +453,7 @@ export default function DashboardPage() {
                     <SelectTrigger className="w-[140px] bg-white/5 border-white/10 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-900 border-white/10">
+                    <SelectContent className="bg-[#1A1A1A] border-white/10">
                       {Object.entries(LINK_TYPES).map(([key, value]) => (
                         <SelectItem key={key} value={key} className="text-white">
                           {value}
@@ -468,21 +466,21 @@ export default function DashboardPage() {
                     placeholder="Label (optional)"
                     value={link.label}
                     onChange={(e) => updateLink(index, 'label', e.target.value)}
-                    className="w-[150px] bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                    className="w-[150px] bg-white/5 border-white/10 text-white placeholder:text-white/40"
                   />
 
                   <Input
                     placeholder="URL"
                     value={link.url}
                     onChange={(e) => updateLink(index, 'url', e.target.value)}
-                    className="flex-1 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                    className="flex-1 bg-white/5 border-white/10 text-white placeholder:text-white/40"
                   />
 
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => removeLink(index)}
-                    className="text-slate-400 hover:text-red-400 hover:bg-red-400/10"
+                    className="text-white/40 hover:text-red-400 hover:bg-red-400/10"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -499,7 +497,7 @@ export default function DashboardPage() {
           <CardContent className="pt-6">
             <div className="text-center">
               <p className="text-3xl font-bold text-white">0</p>
-              <p className="text-sm text-slate-400">Profile Views</p>
+              <p className="text-sm text-white/60">Profile Views</p>
             </div>
           </CardContent>
         </Card>
@@ -507,7 +505,7 @@ export default function DashboardPage() {
           <CardContent className="pt-6">
             <div className="text-center">
               <p className="text-3xl font-bold text-white">0</p>
-              <p className="text-sm text-slate-400">Card Taps</p>
+              <p className="text-sm text-white/60">Card Taps</p>
             </div>
           </CardContent>
         </Card>
@@ -515,7 +513,7 @@ export default function DashboardPage() {
           <CardContent className="pt-6">
             <div className="text-center">
               <p className="text-3xl font-bold text-white">0</p>
-              <p className="text-sm text-slate-400">Contacts Saved</p>
+              <p className="text-sm text-white/60">Contacts Saved</p>
             </div>
           </CardContent>
         </Card>

@@ -1,47 +1,44 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const jakarta = Plus_Jakarta_Sans({
+  variable: '--font-jakarta',
   subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
 })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Hendshake - Digital Business Cards',
-    template: '%s | Hendshake',
+    default: 'Carve - Digital Business Cards That Make an Impression',
+    template: '%s | Carve',
   },
   description:
-    'Create your digital business card with NFC technology. Share your contact info, social links, and portfolio with a simple tap.',
+    'Create stunning digital business cards with NFC technology. Share your profile instantly with a tap. No app required.',
   keywords: [
     'digital business card',
-    'NFC card',
-    'smart business card',
+    'NFC business card',
+    'smart card',
     'contactless networking',
-    'QR code card',
+    'professional networking',
+    'digital identity',
   ],
-  authors: [{ name: 'Hendshake' }],
+  authors: [{ name: 'Carve' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: process.env.NEXT_PUBLIC_APP_URL,
-    siteName: 'Hendshake',
-    title: 'Hendshake - Digital Business Cards',
+    siteName: 'Carve',
+    title: 'Carve - Digital Business Cards That Make an Impression',
     description:
-      'Create your digital business card with NFC technology. Share your contact info, social links, and portfolio with a simple tap.',
+      'Create stunning digital business cards with NFC technology. Share your profile instantly with a tap.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hendshake - Digital Business Cards',
+    title: 'Carve - Digital Business Cards',
     description:
-      'Create your digital business card with NFC technology. Share your contact info, social links, and portfolio with a simple tap.',
+      'Create stunning digital business cards with NFC technology. Share your profile instantly with a tap.',
   },
   robots: {
     index: true,
@@ -55,10 +52,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-950`}
-      >
+    <html lang="en">
+      <body className={`${jakarta.variable} font-sans antialiased`}>
         {children}
         <Toaster />
       </body>

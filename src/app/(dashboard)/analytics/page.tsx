@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   Select,
   SelectContent,
@@ -187,7 +186,7 @@ export default function AnalyticsPage() {
 
         setAnalytics({
           totalViews: currentViewCount || 0,
-          totalTaps: 0, // Would come from card_taps table
+          totalTaps: 0,
           totalContacts: currentContactCount || 0,
           viewsChange,
           tapsChange: 0,
@@ -210,26 +209,26 @@ export default function AnalyticsPage() {
   const formatChange = (change: number) => {
     if (change > 0) {
       return (
-        <span className="flex items-center text-green-500 text-sm">
+        <span className="flex items-center text-green-500 text-sm font-medium">
           <ArrowUpRight className="h-4 w-4" />
           +{change.toFixed(1)}%
         </span>
       )
     } else if (change < 0) {
       return (
-        <span className="flex items-center text-red-500 text-sm">
+        <span className="flex items-center text-red-500 text-sm font-medium">
           <ArrowDownRight className="h-4 w-4" />
           {change.toFixed(1)}%
         </span>
       )
     }
-    return <span className="text-slate-500 text-sm">--</span>
+    return <span className="text-white/40 text-sm">--</span>
   }
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--coral)]" />
       </div>
     )
   }
@@ -245,13 +244,13 @@ export default function AnalyticsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Analytics</h1>
-          <p className="text-slate-400">Track your profile performance</p>
+          <p className="text-white/60">Track your profile performance</p>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger className="w-[140px] bg-white/5 border-white/10 text-white">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-slate-900 border-white/10">
+          <SelectContent className="bg-[#1A1A1A] border-white/10">
             <SelectItem value="7d" className="text-white">Last 7 days</SelectItem>
             <SelectItem value="30d" className="text-white">Last 30 days</SelectItem>
             <SelectItem value="90d" className="text-white">Last 90 days</SelectItem>
@@ -265,16 +264,16 @@ export default function AnalyticsPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400">Profile Views</p>
+                <p className="text-sm text-white/60">Profile Views</p>
                 <p className="text-3xl font-bold text-white">{analytics.totalViews.toLocaleString()}</p>
               </div>
-              <div className="p-3 bg-blue-500/20 rounded-full">
-                <Eye className="h-6 w-6 text-blue-500" />
+              <div className="p-3 bg-[var(--coral)]/20 rounded-xl">
+                <Eye className="h-6 w-6 text-[var(--coral)]" />
               </div>
             </div>
             <div className="mt-2">
               {formatChange(analytics.viewsChange)}
-              <span className="text-slate-500 text-xs ml-1">vs previous period</span>
+              <span className="text-white/40 text-xs ml-1">vs previous period</span>
             </div>
           </CardContent>
         </Card>
@@ -283,16 +282,16 @@ export default function AnalyticsPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400">Card Taps</p>
+                <p className="text-sm text-white/60">Card Taps</p>
                 <p className="text-3xl font-bold text-white">{analytics.totalTaps.toLocaleString()}</p>
               </div>
-              <div className="p-3 bg-purple-500/20 rounded-full">
-                <CreditCard className="h-6 w-6 text-purple-500" />
+              <div className="p-3 bg-purple-500/20 rounded-xl">
+                <CreditCard className="h-6 w-6 text-purple-400" />
               </div>
             </div>
             <div className="mt-2">
               {formatChange(analytics.tapsChange)}
-              <span className="text-slate-500 text-xs ml-1">vs previous period</span>
+              <span className="text-white/40 text-xs ml-1">vs previous period</span>
             </div>
           </CardContent>
         </Card>
@@ -301,16 +300,16 @@ export default function AnalyticsPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400">Contacts Saved</p>
+                <p className="text-sm text-white/60">Contacts Saved</p>
                 <p className="text-3xl font-bold text-white">{analytics.totalContacts.toLocaleString()}</p>
               </div>
-              <div className="p-3 bg-green-500/20 rounded-full">
-                <Users className="h-6 w-6 text-green-500" />
+              <div className="p-3 bg-green-500/20 rounded-xl">
+                <Users className="h-6 w-6 text-green-400" />
               </div>
             </div>
             <div className="mt-2">
               {formatChange(analytics.contactsChange)}
-              <span className="text-slate-500 text-xs ml-1">vs previous period</span>
+              <span className="text-white/40 text-xs ml-1">vs previous period</span>
             </div>
           </CardContent>
         </Card>
@@ -322,7 +321,7 @@ export default function AnalyticsPage() {
         <Card className="bg-white/5 border-white/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-blue-500" />
+              <TrendingUp className="h-5 w-5 text-[var(--coral)]" />
               Views Over Time
             </CardTitle>
           </CardHeader>
@@ -335,10 +334,10 @@ export default function AnalyticsPage() {
                   return (
                     <div
                       key={index}
-                      className="flex-1 bg-blue-600 rounded-t hover:bg-blue-500 transition-colors cursor-pointer group relative"
-                      style={{ height: `${Math.max(height, 2)}%` }}
+                      className="flex-1 bg-[var(--coral)] rounded-t hover:bg-[var(--coral-light)] transition-colors cursor-pointer group relative"
+                      style={{ height: `${Math.max(height, 4)}%` }}
                     >
-                      <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                      <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block bg-[#1A1A1A] text-white text-xs px-2 py-1 rounded whitespace-nowrap border border-white/10">
                         {day.date}: {day.views} views
                       </div>
                     </div>
@@ -346,7 +345,7 @@ export default function AnalyticsPage() {
                 })}
               </div>
             ) : (
-              <div className="h-[200px] flex items-center justify-center text-slate-500">
+              <div className="h-[200px] flex items-center justify-center text-white/40">
                 No data available
               </div>
             )}
@@ -357,23 +356,23 @@ export default function AnalyticsPage() {
         <Card className="bg-white/5 border-white/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              <Smartphone className="h-5 w-5 text-blue-500" />
+              <Smartphone className="h-5 w-5 text-[var(--coral)]" />
               Device Breakdown
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <Smartphone className="h-4 w-4 text-slate-400" />
+                    <Smartphone className="h-4 w-4 text-white/60" />
                     <span className="text-sm text-white">Mobile</span>
                   </div>
-                  <span className="text-sm text-slate-400">{mobilePercent.toFixed(0)}%</span>
+                  <span className="text-sm text-white/60">{mobilePercent.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-blue-500 rounded-full transition-all"
+                    className="h-full bg-[var(--coral)] rounded-full transition-all"
                     style={{ width: `${mobilePercent}%` }}
                   />
                 </div>
@@ -382,10 +381,10 @@ export default function AnalyticsPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <Monitor className="h-4 w-4 text-slate-400" />
+                    <Monitor className="h-4 w-4 text-white/60" />
                     <span className="text-sm text-white">Desktop</span>
                   </div>
-                  <span className="text-sm text-slate-400">{desktopPercent.toFixed(0)}%</span>
+                  <span className="text-sm text-white/60">{desktopPercent.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                   <div
@@ -398,10 +397,10 @@ export default function AnalyticsPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <Monitor className="h-4 w-4 text-slate-400" />
+                    <Monitor className="h-4 w-4 text-white/60" />
                     <span className="text-sm text-white">Tablet</span>
                   </div>
-                  <span className="text-sm text-slate-400">{tabletPercent.toFixed(0)}%</span>
+                  <span className="text-sm text-white/60">{tabletPercent.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                   <div
@@ -419,10 +418,10 @@ export default function AnalyticsPage() {
       <Card className="bg-white/5 border-white/10">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <Globe className="h-5 w-5 text-blue-500" />
+            <Globe className="h-5 w-5 text-[var(--coral)]" />
             Top Referrers
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-white/60">
             Where your traffic is coming from
           </CardDescription>
         </CardHeader>
@@ -430,17 +429,17 @@ export default function AnalyticsPage() {
           {analytics.topReferrers.length > 0 ? (
             <div className="space-y-3">
               {analytics.topReferrers.map((referrer, index) => (
-                <div key={index} className="flex items-center justify-between">
+                <div key={index} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-slate-500 w-6">{index + 1}.</span>
-                    <span className="text-sm text-white">{referrer.source}</span>
+                    <span className="text-sm font-medium text-white/40 w-6">{index + 1}.</span>
+                    <span className="text-sm font-medium text-white">{referrer.source}</span>
                   </div>
-                  <span className="text-sm text-slate-400">{referrer.count} views</span>
+                  <span className="text-sm text-white/60">{referrer.count} views</span>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-slate-500">
+            <div className="text-center py-8 text-white/40">
               <Globe className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>No referrer data yet</p>
               <p className="text-sm">Share your profile to see where traffic comes from</p>
@@ -453,34 +452,34 @@ export default function AnalyticsPage() {
       <Card className="bg-white/5 border-white/10">
         <CardHeader>
           <CardTitle className="text-white">Recent Activity</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-white/60">
             Latest profile views
           </CardDescription>
         </CardHeader>
         <CardContent>
           {analytics.recentViews.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {analytics.recentViews.map((view, index) => (
-                <div key={index} className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
+                <div key={index} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white/5 rounded-full">
-                      <Eye className="h-4 w-4 text-slate-400" />
+                    <div className="p-2 bg-[var(--coral)]/10 rounded-lg">
+                      <Eye className="h-4 w-4 text-[var(--coral)]" />
                     </div>
                     <div>
                       <p className="text-sm text-white">Profile viewed</p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-white/50">
                         {view.device || 'Unknown device'} • {view.referrer || 'Direct'}
                       </p>
                     </div>
                   </div>
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-white/50">
                     {new Date(view.created_at).toLocaleDateString()}
                   </span>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-slate-500">
+            <div className="text-center py-8 text-white/40">
               <Eye className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>No views yet</p>
               <p className="text-sm">Share your profile to start tracking analytics</p>
