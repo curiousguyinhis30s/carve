@@ -1162,36 +1162,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Gradient Overlays */}
-        <style jsx>{`
-          .testimonial-marquee {
-            display: flex;
-            overflow: hidden;
-            width: 100%;
-          }
-          .testimonial-track {
-            display: flex;
-            gap: 1.5rem;
-            padding: 0 0.75rem;
-          }
-          @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          @keyframes marquee-reverse {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
-          }
-          .animate-marquee {
-            animation: marquee 60s linear infinite;
-          }
-          .animate-marquee-reverse {
-            animation: marquee-reverse 60s linear infinite;
-          }
-          .testimonial-marquee:hover .testimonial-track {
-            animation-play-state: paused;
-          }
-        `}</style>
       </section>
 
       {/* ============ TRUSTED BY ============ */}
