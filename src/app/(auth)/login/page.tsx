@@ -57,17 +57,17 @@ export default function LoginPage() {
   }
 
   const handleDemoUserLogin = () => {
-    // Set demo mode in localStorage and redirect
+    // Set demo mode in localStorage and redirect to demo dashboard
     localStorage.setItem('carve_demo_mode', 'user')
     toast.success('Welcome to demo mode!')
-    router.push('/dashboard')
+    router.push('/demo-dashboard')
   }
 
   const handleDemoAdminLogin = () => {
-    // Set demo admin mode in localStorage and redirect
+    // Set demo admin mode in localStorage and redirect to demo admin
     localStorage.setItem('carve_demo_mode', 'admin')
     toast.success('Welcome, Demo Admin!')
-    router.push('/admin')
+    router.push('/demo-admin')
   }
 
   return (
